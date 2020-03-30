@@ -2,7 +2,6 @@ package com.wx.test;
 
 import com.wx.bean.User;
 import org.junit.Test;
-import org.springframework.boot.context.embedded.EmbeddedWebApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -26,12 +25,23 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
  * xml 标签属性 转换成beandefinition对象的过程
  *
  * ioc xml方式创建容器 源码解读：
- *     1. 解析xml文件： 传统标签解析 ；自定义标签解析
+ *     1. 解析xml文件：
+ *           区分标签类型
+ *              传统标签解析；
+ *              自定义标签解析；
  *     2. 通过xml头的url地址找到spring.handlers对应的自定义标签解析器类
  *           自定义标签解析器类各自的调用init方法来初始化各自自定义标签解析类
  *           自定义标签解析类调用parse方法,解析标签，
  *           扫描.class文件有没有 @Service @Component  默认filter过滤器
  *     3.把满足条件的.class转换成beandefinition对象
+ *
+ * xml解析过程中使用的设计模式
+ *
+ *     1.模板设计模式 （refresh方法主流程，loadBeanDefinition方法）
+ *           查看目录  com.wx.javadesign.template
+ *
+ *     2.委托者设计模式（xml解析器）
+ *          查看目录  com.wx.javadesign.entruster
  *
  */
 public class SpringTest {
