@@ -1,0 +1,57 @@
+
+
+1.配置镜像地址：centos 7 系统
+
+     进入目录：  /etc/docker
+     打开：     vi daemon.json
+     修改：
+              {
+               "registry-mirrors": ["https://20*97w2*.mirror.aliyuncs.com"]
+               }
+
+ 2.常用命令
+
+    run/create[镜像名]： 创建一个新的容器并运行一个命令
+
+    start/stop/restart[容器名]：启动/停止/重启一个容器
+
+    kill [容器名]： 直接杀掉容器，不给进程响应时间
+
+    rm[容器名]：删除已经停止的容器
+
+    pause/unpause[容器名]：暂停/恢复容器中的进程
+
+    ps：查看容器列表（默认查看正在运行的容器，-a 查看所有容器）
+
+    inspect[容器名]：查看容器配置元数据
+
+    exec -it [容器名] /bin/bash：进入容器环境中交互操作
+
+    logs --since="2019-02-01" -f --tail=10 [容器名]:查看容器日志
+
+    cp path1 [容器名]:path 容器与主机之间的数据拷贝
+
+    export -o test.tar [容器名] / docker export [容器名]>test.tar : 文件系统作为一个 tar 归档文件
+
+    import test.tar [镜像名:版本号]:导入归档文件，成为一个镜像
+
+
+  3.容器创建详解
+
+        docker run -it --name centos centos /bin/bash（前台进程）
+        exit 退出也关闭容器; Ctrl+P+Q 退出不关闭容器
+
+        后台启动容器：
+        docker run -dit --name nginx nginx
+
+        进入已运行的容器：
+        docker exec -it nginx /bin/bash
+
+        绑定容器端口到主机运行容器：
+        docker run -d -p 8080:80 --name nginx nginx:latest
+
+        挂载主机文件目录到容器内：将主机目录/usr/test/挂载容器目录/usr/local/tomcat/webapps
+        docker run -dit -p 8080:8080 -v /usr/test/:/usr/local/tomcat/webapps --name tomcat tomcat
+
+        复制主机文件到容器内：
+        docker cp /usr/test/wx/1.txt tomcat:/usr/local/tomcat/webapps
