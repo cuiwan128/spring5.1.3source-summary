@@ -1,0 +1,6 @@
+  常见问题：
+      1.关闭 linux系统安装配置
+          进入  vi /etc/sysconfig/selinux
+          修改  SELINUX=disabled
+
+      2.

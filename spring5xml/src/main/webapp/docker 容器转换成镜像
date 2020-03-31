@@ -1,0 +1,54 @@
+
+
+   web项目发布到tomcat测试
+
+   非主流方式：
+        复制war方式发布项目:
+            运行tomcat镜像 ： docker run -d --name tomcat1 -p 8080:8080 tomcat
+            复制war包到tomcat容器： docker run -d --name tomcat1 -p 8080:8080 tomcat
+        发布的web项目 创建新的镜像（由容器转镜像） 可以重复使用
+            运行：docker commit -a "root" -m "tomcat1" tomcat1 tomcat:mvc
+            测试新创建的镜像：docker run -d --name tomcat2 -p 8081:8080 tomcat:mvc
+   dockerfile方式：
+        hello world 测试
+
+            新建文件：vi dockerfile
+            编辑：
+                # 从哪个镜像生成
+                FROM centos
+
+                #CMD echo "hello cmd"
+                #CMD 执行 container 时候的默认行为（容器默认的启动命令）
+                #-c 执行的命令
+                CMD ["/bin/bash","-c","echo 'hello world'"]
+
+            build dockerfile：
+                #cmd 镜像名称
+                #.当前目录
+                docker build -t cmd .
+
+            运行 cmd 镜像：
+                docker run -it cmd
+
+       dockerfile方式 创建tomcat镜像
+           新建文件：vi dockerfile
+           编辑：
+               FROM tomcat
+               # ADD 前面文件的路径和dockerfile 必须在同一个目录下
+               ADD ["target/mvc.war","/usr/local/tomcat/webapps/mvc.war"]
+               ENTRYPOINT ["java","-version"]
+               EXPOSE 8080
+
+           build dockerfile：
+               docker build -t tomcat:java .
+           运行 cmd 镜像：
+               docker run -d --name java tomcat:java
+
+               运行：docker logs java
+                    会出现 java -version 命令的信息
+
+   容器推送到私有仓库：
+
+
+
+
